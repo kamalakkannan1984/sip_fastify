@@ -31,9 +31,10 @@ global.logger = fastify.log;
 fastify.register(require("fastify-swagger"), appConfig.swagger_options);
 fastify.register(require("fastify-cors"), appConfig.cors_options);
 
+
 fastify
   .register(require("fastify-mongodb"), {
-    url: "mongodb://localhost:27017/sample_db1",
+    url: "mongodb://java:javadb@10.22.7.230:27017/XGREGISTAR",
     name: "MONGO1"
   })
   .register(require("fastify-mongodb"), {
@@ -65,7 +66,7 @@ const ajv = new Ajv({
 });
 
 //set fastify default schema compiler
-fastify.setSchemaCompiler(function(schema) {
+fastify.setSchemaCompiler(function (schema) {
   return ajv.compile(schema);
 });
 
