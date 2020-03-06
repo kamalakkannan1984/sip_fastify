@@ -7,15 +7,6 @@
 
 const appConfig = require("./lib/config/app");
 const utils = require("./lib/utils/utils");
-/*
-refferance: 
-https://github.com/siegfriedgrimbeek/fastify-api
-https://github.com/fastify/fastify-mongodb
-
-https://github.com/amirilovic/fastify-typescript-starter/blob/master/src/router.ts
-
-https://github.com/fastify/fastify-mongodb
-*/
 
 const routes = require("./lib/routes");
 const Ajv = require("ajv");
@@ -23,10 +14,10 @@ const authHandler = require("./lib/handlers/auth");
 const userSchema = require("./lib/schema/user.js");
 const fastify = require("fastify")({
   logger: true,
-  logLevel: appConfig.logger_level
+  logLevel: appConfig.logger_level,
+  trustProxy: true
 });
 global.logger = fastify.log;
-
 //require("./lib/config/db");
 fastify.register(require("fastify-swagger"), appConfig.swagger_options);
 fastify.register(require("fastify-cors"), appConfig.cors_options);
@@ -36,11 +27,20 @@ fastify
   .register(require("fastify-mongodb"), {
     url: "mongodb://java:javadb@10.22.7.230:27017/XGREGISTAR",
     name: "MONGO1"
-  })
-  .register(require("fastify-mongodb"), {
-    url: "mongodb://localhost:27017/sample_db2",
-    name: "MONGO2"
   });
+
+
+/*
+fastify
+.register(require("fastify-mongodb"), {
+  url: "mongodb://java:javadb@10.22.7.230:27017/XGREGISTAR",
+  name: "MONGO1"
+})
+.register(require("fastify-mongodb"), {
+  url: "mongodb://localhost:27017/sample_db2",
+  name: "MONGO2"
+});
+*/
 
 //add hooks with relevant handlers
 fastify.addHook("preHandler", utils.formReqData);
